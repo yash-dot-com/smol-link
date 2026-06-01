@@ -3,8 +3,8 @@ import dotenv from "dotenv"
 dotenv.config()
 
 export default defineConfig({
-  schema: "./schema",
-  out: "./migration",
+  schema: "./src/schema",
+  out: "./src/migration",
   dialect: "postgresql",
   dbCredentials: {
     url: process.env.POSTGRES_URL,

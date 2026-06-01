@@ -1,5 +1,9 @@
-import { drizzle } from 'drizzle-orm/vercel-postgres';
-import { sql } from '@vercel/postgres';
+// src/db.ts
+import { drizzle } from "drizzle-orm/neon-http";
+import { neon } from "@neondatabase/serverless";
+import { config } from "dotenv";
 
-// don't really need to pass the sql variable inside drizzle as per the documentation
-export const db = drizzle(sql);
+config({ path: ".env" }); // or .env.local
+
+const sql = neon(process.env.POSTGRES_URL);
+export const db = drizzle({ client: sql });

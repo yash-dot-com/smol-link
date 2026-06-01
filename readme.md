@@ -9,4 +9,6 @@
 - xyz123 -> google.com
 - abc345 -> google.com 
 - notice shortcode key are always unique and can point to single value. 
- 
+
+ ### weird facts I didn't know
+ - node_modules folder is supposed to stay outside the src folder.

@@ -1,0 +1,124 @@
+{
+  "id": "5241b12f-6221-4194-80af-faee83cbea4f",
+  "prevId": "555534a0-9fb5-4acc-aef5-25de446f119e",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.urls": {
+      "name": "urls",
+      "schema": "",
+      "columns": {
+        "urlId": {
+          "name": "urlId",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "longUrl": {
+          "name": "longUrl",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "shortUrl": {
+          "name": "shortUrl",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "urls_userId_users_id_fk": {
+          "name": "urls_userId_users_id_fk",
+          "tableFrom": "urls",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "urls_longUrl_unique": {
+          "name": "urls_longUrl_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "longUrl"
+          ]
+        },
+        "urls_shortUrl_unique": {
+          "name": "urls_shortUrl_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "shortUrl"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

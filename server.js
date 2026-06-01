@@ -2,6 +2,8 @@ import express from "express"
 import dotenv from "dotenv"
 import {db} from "./db.js"
 import { usersTable } from "./schema/user.schema.js"
+import { eq, sql } from "drizzle-orm"
+import bcrypt from "bcrypt"
 
 dotenv.config()
 
@@ -16,37 +18,67 @@ app.get("/health", async (req,res)=>{
     })
 })
 
-// authentication routes - will later organize in separate router
-app.post("/signup", async (req,res)=>{
-    // check if email already registered -> if yes -> 500 bad request already exists
-    // if not then 
-    // 1. hash user password
-    // 2. store user in database
-    // return 200 -> 201 user created message
-    const user = req.body
-    console.log(user)
+app.post("/signup", async (req, res) => {
+  const { email, password } = req.body
+  console.log(email, password)
 
-    try{
-        // check if already exists in database
-        const user = await db.select().from(usersTable)
-        if(!user){
-            return res.status(500).json({
-                message : "my bad bro no users avaiable"
-            })
-        }else{
-            return res.status(200).json({
-                message : "list of users",
-                user,
-            })
-        }
-    }catch(error){
-        console.log(error)
-        return res.status(500).json({
-            message: "something went wrong",
-            error,
-        })
+  try {
+    const existingUser = await db.select().from(usersTable).where(eq(usersTable.email, email)).limit(1)
+    if (existingUser.length) {
+      return res.status(409).json({
+        message: "user already exists"
+      })
     }
+  } catch (error) {
+    console.log("ERROR checking whether user already exists or not", error.message)
+    return res.status(500).json({
+      message: "Internal server error"+ error.message
+    })
+  }
+
+  const salt = await bcrypt.genSalt(10)
+  const hash = await bcrypt.hash(password, salt)
+
+  try {
+    const [newUser] = await db.insert(usersTable).values({
+      email,
+      password: hash
+    }).returning()
+
+    return res.status(201).json({
+      message: "user created successfully",
+      id: newUser.id,
+      email: newUser.email
+    })
+  } catch (error) {
+    console.log("ERROR : ", error.message)
+    return res.status(500).json({
+      message: "something went wrong"
+    })
+  }
 })
+
+app.post("/login", async (req, res) => {
+  
+})
+
+app.post("/urls", (req, res) => {
+  
+})
+
+app.get("/urls", (req, res) => {
+  
+})
+
+app.delete("/urls/:id", (req, res) => {
+  
+})
+
+app.get("/:shortcode", (req, res) => {
+  
+})
+
+
 
 app.listen(PORT, ()=>{
     console.log("server running on port ", PORT)

@@ -15,6 +15,27 @@
       "when": 1780292099485,
       "tag": "0001_icy_omega_flight",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1780295561574,
+      "tag": "0002_curly_genesis",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1780295616340,
+      "tag": "0003_lumpy_stingray",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1780295669940,
+      "tag": "0004_cooing_ironclad",
+      "breakpoints": true
     }
   ]
 }

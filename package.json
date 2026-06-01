@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "backend": "nodemon server.js",
-    "drizzle:generate" : "npx drizzle-kit generate",
-    "drizzle:migrate" : "npx drizzle-kit migrate"
+    "drizzle:generate": "npx drizzle-kit generate",
+    "drizzle:migrate": "npx drizzle-kit migrate"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +17,9 @@
     "nodemon": "^3.1.14"
   },
   "dependencies": {
+    "@vercel/postgres": "^0.10.0",
     "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
     "express": "^5.2.1"
   }
 }

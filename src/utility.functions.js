@@ -1,3 +1,5 @@
+import { urlsTable } from "./schema/urls.schema.js"
+
 // base62 shortcode generator
 export default function generateShortcode() {
   const seedCode = "ABCDEFGHIJKLMNOPQRSTUVWZYXabcdefghijklmnopqrstuvwxyz0123456789"
@@ -11,6 +13,12 @@ export default function generateShortcode() {
   return shortCode;
 }
 
+// testing uniqueness
 // for (let i = 0; i < 10; i++){
 //   console.log(generateShortcode())
 // }
+
+// utility function to check whether generated shortcode is unique for database, if not generate new again until its unique 
+export default async function checkUniqueShortCode(shortCode) {
+  
+}

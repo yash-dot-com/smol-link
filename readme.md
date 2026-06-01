@@ -4,3 +4,9 @@
 - if not map it to the long url
 - if yes - regenerate another shortcode
 - easy 
+
+### Unique Key -> Non Unique Value 
+- xyz123 -> google.com
+- abc345 -> google.com 
+- notice shortcode key are always unique and can point to single value. 
+ 

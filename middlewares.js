@@ -26,6 +26,11 @@ export function authMiddleware(req, res, next) {
   try {
     // middleware read cookies
     const token = req.cookies.userToken
+    if (!token) {
+      return res.status(401).json({
+        message: "Unauthorized"
+      })
+    }
     console.log(token)
     // verify with jwt.verify 
     const decoded = jwt.verify(token, SECRET)

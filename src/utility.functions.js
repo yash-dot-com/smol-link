@@ -19,6 +19,6 @@ export default function generateShortcode() {
 // }
 
 // utility function to check whether generated shortcode is unique for database, if not generate new again until its unique 
-export default async function checkUniqueShortCode(shortCode) {
+export async function checkUniqueShortCode(shortCode) {
   
 }

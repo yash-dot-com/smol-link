@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import cookieParser from "cookie-parser"
 import authRouter from "./routes/auth.routes.js"
 import testRouter from "./routes/test.routes.js"
+import urlsRouter from "./routes/urls.routes.js"
 
 dotenv.config()
 
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 3000
 app.use(express.json())
 app.use("/", authRouter)
 app.use("/", testRouter)
+app.use("/", urlsRouter)
 
 app.get("/health", async (req,res)=>{
     return res.status(200).json({
@@ -20,25 +22,6 @@ app.get("/health", async (req,res)=>{
     })
 })
 
-
-app.post("/urls", (req, res) => {
-  
-})
-
-app.get("/urls", (req, res) => {
-  
-})
-
-app.delete("/urls/:id", (req, res) => {
-  
-})
-
-app.get("/:shortcode", (req, res) => {
-  
-})
-
-
-
 app.listen(PORT, ()=>{
-    console.log("server running on port ", PORT)
+    console.log("server running on http://localhost:"+PORT)
 })

@@ -1,53 +1,48 @@
 import express from "express"
-import generateShortcode from "../utility.functions"
-import { urlsTable } from "../schema/urls.schema"
+import generateShortcode from "../utility.functions.js"
+import { urlsTable } from "../schema/urls.schema.js"
+import { authMiddleware } from "../middlewares.js"
+import { db } from "../db.js"
+import { usersTable } from "../schema/user.schema.js"
+import { eq } from "drizzle-orm"
 
 const urlsRouter = express.Router()
 
-// create entry for a longrul in database.
-urlsRouter.post("/urls", async (req, res) => {
-  const { longUrl } = req.body
-  // generate shortcode
-  const shortCode = generateShortcode()
+// all urls created by a particular user 
+urlsRouter.get("/urls/:id", authMiddleware,async (req, res) => {
+  const id = req.params.id
+
   try {
-    const [exists] = await db.select().from(urlsTable).where(eq(urlsTable.originalUrl, longUrl)).limit(1)
-    if (exists.length) {
-      const [uniqueShortCode] = await db.select({ shortCode }).from(urlsTable).where(eq(urlsTable.originalUrl, longUrl))
-      urlsRouter.redirect(`/${uniqueShortCode}`)
+    // find if user exists, if yes then return all the urls user made
+    const user = await db.select({
+      userId: usersTable.id
+    }).from(usersTable).where(eq(usersTable.id, id))
+
+    if (user.length === 0) {
+      return res.status(429).json({
+        message: "ERROR : user doesn't exists"
+      })
     }
 
-    // if originalUrl doesn't has entry in database 
-    // generate random shortcode -> check if its unique -> assign to originalUrl -> insert entry in database (uniqueShortCode, originalUrl)
-    // return generated shortCode to user in response body
-    // needs a utility function to check whether generated shortcode is unique or not. ->
-    // continue from tomorrow 
-    
+    // no need to joins, filter and return urls with userId == id 
+    const userAllUrls = await db.select().from(urlsTable).where(eq(urlsTable.userId, id))
+    if (userAllUrls.length === 0) {
+      return res.status(200).json({
+        message: "ERROR : user doesn't have any urls created"
+      })
+    }
+
+    return res.status(200).json(userAllUrls)
   } catch (error) {
     console.log(error)
     return res.status(500).json({
-      message: `Internal Server Error: ${error.message}`
+      message: "something went wrong"
     })
   }
-})
+})  
 
-// delete an entry from urls table 
-urlsRouter.delete("/urls", async (req, res) => {
+// route to create entry in urls table 
+urlsRouter.post("/urls", authMiddleware, async (req, res) => {
   
 })
-
-// get metadata / information about single url 
-urlsRouter.get("/urls/:shortcode", async (req, res) => {
-  
-})
-
-// redirection using shortcode
-urlsRouter.get("/:shortcode", async (req, res) => {
-  
-})
-
-// list of all urls created by particular user 
-urlsRouter.get("/urls", async (req, res) => {
-  
-})
-
 export default urlsRouter;

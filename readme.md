@@ -12,3 +12,4 @@
 
  ### weird facts I didn't know
  - node_modules folder is supposed to stay outside the src folder.
+ - if res.redirect(302, destinationUrl) : this destination url needs to have https / http otherwise express will consider it internal and will merge the current_route/destinationUrl : which is not valid obviously

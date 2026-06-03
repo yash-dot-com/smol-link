@@ -1,3 +1,9 @@
+### architecture 
+<img width="804" height="480" alt="image" src="https://github.com/user-attachments/assets/3d86b942-a045-4afa-8496-f09976199719" />
+
+### visual documentation 
+<img width="807" height="695" alt="image" src="https://github.com/user-attachments/assets/7dc3a68b-1083-4259-87e9-ac0aba54d056" />
+
 ### Base62 conversion concept
 - 6 digit random code from string "ABCDEFGHIJKLMNOPQRTSUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 - check if code exists in db
@@ -13,8 +19,3 @@
  ### weird facts I didn't know
  - node_modules folder is supposed to stay outside the src folder.
  - if res.redirect(302, destinationUrl) : this destination url needs to have https / http otherwise express will consider it internal and will merge the current_route/destinationUrl : which is not valid obviously
-
-### visual documentation 
-<img width="807" height="695" alt="image" src="https://github.com/user-attachments/assets/7dc3a68b-1083-4259-87e9-ac0aba54d056" />
-
-### architecture 

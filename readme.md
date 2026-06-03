@@ -16,6 +16,15 @@
  - learnt using drizzle-orm's sql-like-api for querying data instead of raw SQL (more productive and lesser error prone)
  - base62 concept - its so basic but yeah
  - learnt how url shortener hashes and settles collisions if more than 2 users want to shorten same URL
+ - when same repository has 2 different commit histories, remote - different, local - different and we want to keep changes and work from both of them, we do git pull rebase
+
+### git rebase
+- git pull origin main --rebase
+```
+Remote : A --- B (README commit)
+Local : A --- C (bugfix commit)
+After rebase : A --- B --- C
+```
 
 ### Base62 conversion
 - 6 digit random code from string "ABCDEFGHIJKLMNOPQRTSUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"

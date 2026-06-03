@@ -5,6 +5,29 @@ import { authMiddleware } from "../middlewares.js"
 import { db } from "../db.js"
 import { usersTable } from "../schema/user.schema.js"
 import { eq } from "drizzle-orm"
+import dotenv from "dotenv"
+dotenv.config()
+
+// utility function 
+async function createUniqueShortCode() {
+  let shortCode, result;
+  do {
+    // generate unique shortcode, check in db if it exists, repeat until it does not (for trust uniqueness)
+    shortCode = generateShortcode()
+    // check in database
+    [result] = await db.select().from(urlsTable).where(eq(urlsTable.shortCode, shortCode))
+    // if result is empty / undefined object -> shortCode is unique to db -> move forward and insert it,
+    // else -> repeat
+
+    // or another way is to check if the array is empty or not 
+    // while(result.length !== 0)
+  } while (result !== undefined)
+
+  return shortCode;
+}
+
+// baseUrl of the platform for constructing shortlink after shortcode is generateShortcode
+const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT}`
 
 const urlsRouter = express.Router()
 
@@ -41,47 +64,63 @@ urlsRouter.get("/urls/", authMiddleware,async (req, res) => {
 })  
 
 // route to create entry in urls table 
+// data incoming : long url and userId from auth 
+// data output required : creation of unique shortcode for long url and persist it in db and send back to user 
+
 urlsRouter.post("/urls", authMiddleware, async (req, res) => {
+  // extract longUrl & userId from request 
+  const { longUrl } = req.body
+  const userId = req.userId
+
+  // if payload empty -> early return
+  // 
+  if (!longUrl) {
+    return res.status(400).json({
+     message: "ERROR : bad request, longUrl is required"
+   })
+  } 
+
+  // check if longUrl is actually an valid url form 
   try {
-    // check if userId exists in req and longUrl exists req.body object -> early return if not present
-    if (!req.userId) {
-      return res.status(419).json({
-        message: "ERROR : Unauthorized"
-      })
-    } 
+    new URL(longUrl)
+  } catch {
+    return res.status(400).json({
+      message: "Invalid URL, make sure to add http:// or https:// as well"  
+    })
+  }
+
+  // check if userId exists in req and longUrl exists req.body object -> early return if not present
+  if (!userId) {
+    return res.status(401).json({
+      message: "ERROR : Unauthorized"
+    })
+  } 
   
-    // check if userId is valid / user exists -> early return if not exists
-    const user = await db.select({
-      userId: usersTable.id
-    }).from(usersTable).where(eq(usersTable.id, id));
+  try {
+    // NOTE 
+    // redundant -> because if the user is authenticated then user DOES exists FOR SURE.
+    
+    // // check if userId is valid / user exists -> early return if not exists
+    // const user = await db.select({
+    //   userId: usersTable.id
+    // }).from(usersTable).where(eq(usersTable.id, id));
   
-    if (user.length === 0) {
-      return res.status(404).json({
-        message: "ERROR : user not found"
-      })
-    }
-  
-    // check if request body has longUrl -> early return if not present
-    const { longUrl } = req.body
-    if (!longUrl) {
-      return res.status(400).json({
-       message: "ERROR : bad request, longUrl is required"
-     })
-    } 
-  
-    let shortCodeExistsAlready = [];
-    do { 
-      const shortCode = generateShortcode()
-      shortCodeExistsAlready = await db.select().from(urlsTable).where(eq(urlsTable.shortCode, shortCode))
-    } while (shortCodeExistsAlready.length === 0)
-  
+    // if (user.length === 0) {
+    //   return res.status(404).json({
+    //     message: "ERROR : user not found"
+    //   })
+    // }
+
+    const shortCode = await createUniqueShortCode()
+    
+    // extracting newEntry object
     const [newUrlEntry] = await db.insert(urlsTable).values({
-      userId: req.userId,
+      userId,
       originalUrl: longUrl,
-      shortUrl: shortCode,
+      shortCode,
     }).returning()
   
-    if (newUrlEntry.length) {
+    if (!newUrlEntry) {
       return res.status(500).json({
         message: "ERROR : internal server error, couldn't insert entry"
       })
@@ -90,7 +129,7 @@ urlsRouter.post("/urls", authMiddleware, async (req, res) => {
     return res.status(201).json({
       message: "SUCCESS : entry created successfully",
       originalUrl: longUrl,
-      shortUrl: `http:localhost:${process.env.PORT}/shortlink/${shortCode}`
+      shortUrl: `${baseUrl}/shortlink/${shortCode}`
     })
     
   } catch (error) {
@@ -155,6 +194,11 @@ urlsRouter.get("/urls/:shortcode",authMiddleware, async (req, res) => {
   // but looking at scale we can just implement simple unique shortcode generation
   try {
     
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      message: "Internal Server Error"
+    })
   }
 })
 export default urlsRouter;

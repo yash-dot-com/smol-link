@@ -7,6 +7,9 @@
 ### using curl instead of bloated postman
 <img width="907" height="450" alt="image" src="https://github.com/user-attachments/assets/d4491a75-0f12-4a5c-92e1-c9527b13db6d" />
 
+### route implementation for generating unique shortCode
+<img width="1054" height="554" alt="image" src="https://github.com/user-attachments/assets/ad7b6c7c-24d4-4f28-92b4-30d2591cf8b6" />
+
  ### learnings
  - learnt to setup and configure drizzle-kit for generating SQL from drizzle-orm code & migrating (pushing) the SQL to database
  - learnt JWT based simple session management

@@ -57,6 +57,20 @@
       "when": 1780321631928,
       "tag": "0007_dark_dragon_man",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1780488011534,
+      "tag": "0008_confused_justin_hammer",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1780491209935,
+      "tag": "0009_supreme_captain_flint",
+      "breakpoints": true
     }
   ]
 }

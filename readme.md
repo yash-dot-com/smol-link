@@ -4,7 +4,14 @@
 ### visual documentation 
 <img width="807" height="695" alt="image" src="https://github.com/user-attachments/assets/7dc3a68b-1083-4259-87e9-ac0aba54d056" />
 
-### Base62 conversion concept
+ ### learnings
+ - learnt to setup and configure drizzle-kit for generating SQL from drizzle-orm code & migrating (pushing) the SQL to database
+ - learnt JWT based simple session management
+ - learnt using drizzle-orm's sql-like-api for querying data instead of raw SQL (more productive and lesser error prone)
+ - base62 concept - its so basic but yeah
+ - learnt how url shortener hashes and settles collisions if more than 2 users want to shorten same URL
+
+### Base62 conversion
 - 6 digit random code from string "ABCDEFGHIJKLMNOPQRTSUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 - check if code exists in db
 - if not map it to the long url
@@ -16,6 +23,12 @@
 - abc345 -> google.com 
 - notice shortcode key are always unique and can point to single value. 
 
- ### weird facts I didn't know
- - node_modules folder is supposed to stay outside the src folder.
- - if res.redirect(302, destinationUrl) : this destination url needs to have https / http otherwise express will consider it internal and will merge the current_route/destinationUrl : which is not valid obviously
+### Dumb finds out things
+- learnt how to actually use git productively
+- learnt creation of custom scripts for project setup, utility (npx drizzle-kit generate / migrate) etc
+- learnt using CURL instead of postman
+- node_modules folder is supposed to stay outside the src folder.
+- if res.redirect(302, destinationUrl) : this destination url needs to have https / http otherwise express will consider it internal and will merge the current_route/destinationUrl : which is not valid obviously
+
+### Curl-ing instead of using bloated postman
+- 

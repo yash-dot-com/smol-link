@@ -38,12 +38,16 @@ After rebase : A --- B --- C
 - abc345 -> google.com 
 - notice shortcode key are always unique and can point to single value. 
 
-### Dumb finds out things
+### Dumb things I found out
 - learnt how to actually use git productively
+- learnt how to structure project from first principles
 - learnt creation of custom scripts for project setup, utility (npx drizzle-kit generate / migrate) etc
 - learnt using CURL instead of postman
 - node_modules folder is supposed to stay outside the src folder.
 - if res.redirect(302, destinationUrl) : this destination url needs to have https / http otherwise express will consider it internal and will merge the current_route/destinationUrl : which is not valid obviously
 
-
-
+### what to improve
+- make this deployable
+- make a frontend
+- implement testing
+- caching is not yet implemented with redis

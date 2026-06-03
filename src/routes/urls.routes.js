@@ -152,7 +152,7 @@ urlsRouter.get("/urls/:shortcode",authMiddleware, async (req, res) => {
   // this will get messed up because 2 users might get same shortcode if any collisions occur.
   // to implement monitoring we need to have unique shortcode compulsorily. 
   // one core shortcoming -> randomly generate code gets checked against db entries every time -> read fatigue
-  // but looking at scale we can just implement simple things
+  // but looking at scale we can just implement simple unique shortcode generation
   try {
     
   }

@@ -9,10 +9,9 @@ import { eq } from "drizzle-orm"
 const urlsRouter = express.Router()
 
 // all urls created by a particular user 
-urlsRouter.get("/urls/:id", authMiddleware,async (req, res) => {
-  const id = req.params.id
-
+urlsRouter.get("/urls/", authMiddleware,async (req, res) => {
   try {
+    const id = req.userId
     // find if user exists, if yes then return all the urls user made
     const user = await db.select({
       userId: usersTable.id
@@ -77,9 +76,9 @@ urlsRouter.post("/urls", authMiddleware, async (req, res) => {
     } while (shortCodeExistsAlready.length === 0)
   
     const [newUrlEntry] = await db.insert(urlsTable).values({
-      originalUrl: longUrl,
-      shortCode,
       userId: req.userId,
+      originalUrl: longUrl,
+      shortUrl: shortCode,
     }).returning()
   
     if (newUrlEntry.length) {
@@ -90,14 +89,10 @@ urlsRouter.post("/urls", authMiddleware, async (req, res) => {
   
     return res.status(201).json({
       message: "SUCCESS : entry created successfully",
-      newUrlEntry
+      originalUrl: longUrl,
+      shortUrl: `http:localhost:${process.env.PORT}/shortlink/${shortCode}`
     })
     
-    
-    // if yes then -> 
-    // generate random shortCode
-    // check if the shortCode exists in the database -> re-generate shortCode again -> until not unique
-    // insert longUrl, its shortcode and userId in the urls table
   } catch (error) {
     console.log(error)
     return res.status(500).json({
@@ -151,4 +146,15 @@ urlsRouter.get("/shortlink/:shortcode", async (req, res) => {
   }
 })
 
+// get information about one particular url 
+urlsRouter.get("/urls/:shortcode",authMiddleware, async (req, res) => {
+  const code = req.params.shortcode
+  // this will get messed up because 2 users might get same shortcode if any collisions occur.
+  // to implement monitoring we need to have unique shortcode compulsorily. 
+  // one core shortcoming -> randomly generate code gets checked against db entries every time -> read fatigue
+  // but looking at scale we can just implement simple things
+  try {
+    
+  }
+})
 export default urlsRouter;

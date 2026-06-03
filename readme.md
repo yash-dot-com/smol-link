@@ -4,6 +4,9 @@
 ### visual documentation 
 <img width="807" height="695" alt="image" src="https://github.com/user-attachments/assets/7dc3a68b-1083-4259-87e9-ac0aba54d056" />
 
+### using curl instead of bloated postman
+- <img width="807" height="750" alt="image" src="https://github.com/user-attachments/assets/d4491a75-0f12-4a5c-92e1-c9527b13db6d" />
+
  ### learnings
  - learnt to setup and configure drizzle-kit for generating SQL from drizzle-orm code & migrating (pushing) the SQL to database
  - learnt JWT based simple session management
@@ -30,5 +33,5 @@
 - node_modules folder is supposed to stay outside the src folder.
 - if res.redirect(302, destinationUrl) : this destination url needs to have https / http otherwise express will consider it internal and will merge the current_route/destinationUrl : which is not valid obviously
 
-### Curl-ing instead of using bloated postman
-- 
+
+
